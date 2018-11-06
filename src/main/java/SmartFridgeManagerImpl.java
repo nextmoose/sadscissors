@@ -8,7 +8,7 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      * @param itemUUID {@inheritDoc}
      **/
     public void handleItemRemoved( String itemUUID ) {
-	
+	throw new RuntimeException();
     }
 
     /**
@@ -20,6 +20,7 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      * @param fillFactor @{inheritDoc}
      **/
     public void handleItemAdded( long itemType, String itemUUID, String name, Double fillFactor ) {
+	throw new RuntimeException();
     }
 
     /**
@@ -28,7 +29,8 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      * @param fillFactor @{inheritDoc}
      * @return an array of arrays containing [ itemType, fillFactor ]
      **/
-    Object[] getItems( Double fillFactor ) {
+    public Object[] getItems( Double fillFactor ) {
+	throw new RuntimeException();
     }
 
     /**
@@ -37,7 +39,8 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      * @param itemType @{inheritDoc}
      * @return @{inheritDoc}
      **/
-    Double getFillFactor( long itemType ) {
+    public Double getFillFactor( long itemType ) {
+	throw new RuntimeException();
     }
 
     /**
@@ -45,6 +48,7 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      *
      * @param itemType @{inheritDoc}
      */
-    void forgetItem( long itemType ) {
+    public void forgetItem( long itemType ) {
+	throw new RuntimeException();
     }    
 }
