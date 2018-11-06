@@ -1,0 +1,3 @@
+/**
+ * Smart Refridgerator Project.
+ **/

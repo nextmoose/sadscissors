@@ -7,8 +7,8 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      *
      * @param itemUUID {@inheritDoc}
      **/
-    public void handleItemRemoved( String itemUUID ) {
-	throw new RuntimeException();
+    public void handleItemRemoved(final String itemUUID) {
+        throw new RuntimeException();
     }
 
     /**
@@ -19,8 +19,12 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      * @param name @{inheritDoc}
      * @param fillFactor @{inheritDoc}
      **/
-    public void handleItemAdded( long itemType, String itemUUID, String name, Double fillFactor ) {
-	throw new RuntimeException();
+    public void handleItemAdded(
+                                final long itemType,
+                                final String itemUUID,
+                                final String name,
+                                final Double fillFactor) {
+        throw new RuntimeException();
     }
 
     /**
@@ -29,8 +33,8 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      * @param fillFactor @{inheritDoc}
      * @return an array of arrays containing [ itemType, fillFactor ]
      **/
-    public Object[] getItems( Double fillFactor ) {
-	throw new RuntimeException();
+    public Object[] getItems(final Double fillFactor) {
+        throw new RuntimeException();
     }
 
     /**
@@ -39,8 +43,8 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      * @param itemType @{inheritDoc}
      * @return @{inheritDoc}
      **/
-    public Double getFillFactor( long itemType ) {
-	throw new RuntimeException();
+    public Double getFillFactor(final long itemType) {
+        throw new RuntimeException();
     }
 
     /**
@@ -48,7 +52,7 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      *
      * @param itemType @{inheritDoc}
      */
-    public void forgetItem( long itemType ) {
-	throw new RuntimeException();
-    }    
+    public void forgetItem(final long itemType) {
+        throw new RuntimeException();
+    }
 }
