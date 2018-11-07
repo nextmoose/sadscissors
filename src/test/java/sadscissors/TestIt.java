@@ -40,6 +40,7 @@ public final class TestIt {
     public void justAnExample1() {
         fridge.handleItemRemoved("100");
         assertEquals("bar", fridge.getItems(HALF)[0]);
+        assertEquals("bar", fridge.getItems(HALF)[0]);
         assertTrue(true);
     }
 }
