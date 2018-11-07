@@ -3,6 +3,7 @@ package sadscissors;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 /**
  * WTF.
@@ -38,7 +39,7 @@ public final class TestIt {
     @Test
     public void justAnExample1() {
         fridge.handleItemRemoved("100");
-        fridge.getItems(HALF);
+        assertEquals("bar", fridge.getItems(HALF)[0]);
         assertTrue(true);
     }
 }
