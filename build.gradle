@@ -7,25 +7,10 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    testCompileOnly(
+    testCompile (
             'junit:junit:4.12'
-    )
-    testImplementation (
-      'org.junit.jupiter:junit-jupiter-api:5.2.0'
-    )
-    testRuntimeOnly (
-      'org.junit.jupiter:junit-jupiter-engine:5.2.0',
-      'org.junit.vintage:junit-vintage-engine:5.2.0'
     )
 }
 pitest {
-    targetClasses = ['sadscissors.*']
-    targetTests = ['test.*']
-    pitestVersion = '1.3.0'
-    verbose = true
-    threads = 2
-    testPlugin = 'junit5'
-}
-test {
-    useJUnitPlatform()
+  targetClasses = [ 'sadscissors.*' ];
 }
