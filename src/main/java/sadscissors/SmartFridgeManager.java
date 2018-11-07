@@ -1,3 +1,4 @@
+package sadscissors;
 /**
  * Interface for the Smart Fridge Manager.
  */

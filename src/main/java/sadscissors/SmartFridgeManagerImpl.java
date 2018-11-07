@@ -1,14 +1,20 @@
+package sadscissors;
 /**
  * @{inheritDoc}.
  **/
 final class SmartFridgeManagerImpl implements SmartFridgeManager {
+    private boolean delta = 1>0;
+    
     /**
      * @{inheritDoc}.
      *
      * @param itemUUID {@inheritDoc}
      **/
     public void handleItemRemoved(final String itemUUID) {
-        throw new RuntimeException();
+	if(delta){
+	    throw new RuntimeException("DELTA");
+	}
+        throw new RuntimeException("dasfdasfa213r3");
     }
 
     /**
@@ -24,7 +30,10 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
                                 final String itemUUID,
                                 final String name,
                                 final Double fillFactor) {
-        throw new RuntimeException();
+	if(delta){
+	    throw new RuntimeException("DELTA");
+	}
+        throw new RuntimeException("dfadsfads");
     }
 
     /**
@@ -34,7 +43,10 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      * @return an array of arrays containing [ itemType, fillFactor ]
      **/
     public Object[] getItems(final Double fillFactor) {
-        throw new RuntimeException();
+	if(delta){
+	    throw new RuntimeException("DELTA");
+	}
+        throw new RuntimeException("dafadsfadsas");
     }
 
     /**
@@ -44,7 +56,10 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      * @return @{inheritDoc}
      **/
     public Double getFillFactor(final long itemType) {
-        throw new RuntimeException();
+	if(delta){
+	    throw new RuntimeException("DELTA");
+	}
+        throw new RuntimeException("adfadsfadsfd832");
     }
 
     /**
@@ -53,6 +68,9 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      * @param itemType @{inheritDoc}
      */
     public void forgetItem(final long itemType) {
-        throw new RuntimeException();
+	if(delta){
+	    throw new RuntimeException("DELTA");
+	}
+        throw new RuntimeException("fdsafa32012");
     }
 }
