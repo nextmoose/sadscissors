@@ -5,7 +5,9 @@ import javax.jms.ConnectionFactory;
 import javax.jms.Connection;
 import javax.jms.Session;
 import javax.jms.Queue;
+import javax.jms.MessageProducer;
 import javax.jms.JMSException;
+import javax.jms.MapMessage;
 import static javax.jms.Session.AUTO_ACKNOWLEDGE;
 
 /**
@@ -78,5 +80,9 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
         connection.start();
         Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
         Queue queue  = session.createQueue("fridge");
+	MessageProducer producer = session.createProducer(queue);
+	MapMessage message = session.createMapMessage();
+	message.setString("foo", "bar");
+	producer.send(message);
     }
 }
