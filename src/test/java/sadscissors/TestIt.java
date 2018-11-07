@@ -41,6 +41,9 @@ public final class TestIt {
         fridge.handleItemRemoved("100");
         fridge.handleItemRemoved("101");
         assertEquals("101", fridge.getItems(HALF)[0]);
+        fridge.handleItemRemoved("102");
+        fridge.handleItemRemoved("103");
+        assertEquals("103", fridge.getItems(HALF)[0]);
         assertTrue(true);
     }
 }

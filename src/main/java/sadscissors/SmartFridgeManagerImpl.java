@@ -1,6 +1,8 @@
 package sadscissors;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import java.util.Collection;
+import java.util.ArrayList;
 import javax.jms.ConnectionFactory;
 import javax.jms.Connection;
 import javax.jms.Session;
@@ -22,6 +24,11 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
     private static final long SECOND = 1000;
 
     /**
+     * The current data.
+     **/
+    private final Collection<Tuple> tuples = new ArrayList<>();
+
+    /**
      * @{inheritDoc}.
      *
      * @param itemUUID {@inheritDoc}
@@ -36,6 +43,7 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
             Queue queue  = session.createQueue("fridge");
             MessageProducer producer = session.createProducer(queue);
             MapMessage message = session.createMapMessage();
+            message.setString("type", "handleItemRemoved");
             message.setString("itemUUID", itemUUID);
             producer.send(message);
         } catch (JMSException cause) {
@@ -56,7 +64,25 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
                                 final String itemUUID,
                                 final String name,
                                 final Double fillFactor) {
-        throw new RuntimeException("dfadsfads");
+        try {
+            ConnectionFactory factory =
+                new ActiveMQConnectionFactory("vm://localhost");
+            Connection connection = factory.createConnection();
+            connection.start();
+            Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
+            Queue queue  = session.createQueue("fridge");
+            MessageProducer producer = session.createProducer(queue);
+            MapMessage message = session.createMapMessage();
+            message.setString("type", "handleItemAdded");
+            message.setLong("itemType", itemType);
+            message.setString("itemUUID", itemUUID);
+            message.setString("name", name);
+            message.setDouble("fillFactor", fillFactor);
+            producer.send(message);
+            connection.close();
+        } catch (JMSException cause) {
+            throw new RuntimeException(cause);
+        }
     }
 
     /**
@@ -66,11 +92,8 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      * @return an array of arrays containing [ itemType, fillFactor ]
      **/
     public Object[] getItems(final Double fillFactor) {
-        try {
-            return recv();
-        } catch (final JMSException cause) {
-            throw new RuntimeException(cause);
-        }
+	read();
+	return tuples.stream()
     }
 
     /**
@@ -89,32 +112,67 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      * @param itemType @{inheritDoc}
      */
     public void forgetItem(final long itemType) {
-        throw new RuntimeException("fdsafa32012");
+        try {
+            ConnectionFactory factory =
+                new ActiveMQConnectionFactory("vm://localhost");
+            Connection connection = factory.createConnection();
+            connection.start();
+            Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
+            Queue queue  = session.createQueue("fridge");
+            MessageProducer producer = session.createProducer(queue);
+            MapMessage message = session.createMapMessage();
+            message.setString("type", "forgetItem");
+            message.setLong("itemType", itemType);
+            producer.send(message);
+            connection.close();
+        } catch (JMSException cause) {
+            throw new RuntimeException(cause);
+        }
     }
 
-    /**
-     * WTF.
-     *
-     * @return wtf
-     * @throws JMSException never
-     **/
-    private Object[] recv() throws JMSException {
-        ConnectionFactory factory =
-            new ActiveMQConnectionFactory("vm://localhost");
-        Connection connection = factory.createConnection();
-        connection.start();
-        Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
-        Queue queue  = session.createQueue("fridge");
-        MessageConsumer consumer = session.createConsumer(queue);
-        Object[] obj = new Object[1];
-        for (
-            Message message = consumer.receive(SECOND);
-            message != null;
-            message = consumer.receive(SECOND)
-            ) {
-            MapMessage mapMessage = (MapMessage) message;
-            obj[0] = mapMessage.getString("itemUUID");
+    public void read() {
+        try {
+            ConnectionFactory factory =
+                new ActiveMQConnectionFactory("vm://localhost");
+            Connection connection = factory.createConnection();
+            connection.start();
+            Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
+            Queue queue  = session.createQueue("fridge");
+            MessageConsumer consumer = session.createConsumer(queue);
+            Object[] obj = new Object[1];
+            for (
+                 Message message = consumer.receive(SECOND);
+                 message != null;
+                 message = consumer.receive(SECOND)
+                 ) {
+                final MapMessage mapMessage = (MapMessage) message;
+		if(mapMessage.getString("type")=="handleItemAdded") {
+		    tuples.add(new Tuple() {
+			    @Override
+			    public long getItemUUID() {
+				return mapMessage.getString("itemUUID");
+			    }
+
+			    @Override
+			    public long getItemType() {
+				return mapMessage.getLong("itemType");
+			    }
+			    
+			    @Override
+			    public double getFillFactor() {
+				return mapMessage.getDouble("fillFactor");
+			    }
+			});
+		}else if(mapMessage.getString("type")=="handleItemRemoved") {
+		    tuples.removeIf(tuple -> tuple.getItemUUID()==mapMessage.getString("itemUUID"));
+		} else if(mapMessage.getString("type")=="forgetItem") {
+		    tuples.removeIf(tuple -> tuple.getItemType()==mapMessage.getLong("itemType");
+		}
+            }
+            connection.close();
+            return obj;
+        } catch (final JMSException cause) {
+            throw new RuntimeException(cause);
         }
-        return obj;
     }
 }
