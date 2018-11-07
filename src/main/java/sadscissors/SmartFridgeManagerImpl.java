@@ -1,4 +1,13 @@
 package sadscissors;
+
+import org.apache.activemq.ActiveMQConnectionFactory;
+import javax.jms.ConnectionFactory;
+import javax.jms.Connection;
+import javax.jms.Session;
+import javax.jms.Queue;
+import javax.jms.JMSException;
+import static javax.jms.Session.AUTO_ACKNOWLEDGE;
+
 /**
  * @{inheritDoc}.
  **/
@@ -55,5 +64,19 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      */
     public void forgetItem(final long itemType) {
         throw new RuntimeException("fdsafa32012");
+    }
+
+    /**
+     * WTF.
+     *
+     * @throws JMSException never
+     **/
+    private void doit() throws JMSException {
+        ConnectionFactory factory =
+            new ActiveMQConnectionFactory("vm://localhost");
+        Connection connection = factory.createConnection();
+        connection.start();
+        Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
+        Queue queue  = session.createQueue("fridge");
     }
 }

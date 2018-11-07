@@ -10,6 +10,10 @@ dependencies {
     testCompile (
             'junit:junit:4.12'
     )
+    compile  (
+      'org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1',
+      'org.apache.activemq:activemq-broker:5.10.0'
+    )
 }
 pitest {
     targetClasses = ['sadscissors.*']
