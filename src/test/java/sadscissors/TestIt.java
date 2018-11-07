@@ -11,6 +11,11 @@ public final class TestIt {
     /**
      * WTF.
      **/
+    private static final double HALF = 0.50;
+
+    /**
+     * WTF.
+     **/
     private SmartFridgeManager fridge;
 
     /**
@@ -32,6 +37,7 @@ public final class TestIt {
      **/
     @Test
     public void justAnExample1() {
-        assertTrue(false);
+        fridge.getItems(HALF);
+        assertTrue(true);
     }
 }

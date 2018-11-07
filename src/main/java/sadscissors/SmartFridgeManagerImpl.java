@@ -35,7 +35,7 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      * @return an array of arrays containing [ itemType, fillFactor ]
      **/
     public Object[] getItems(final Double fillFactor) {
-        throw new RuntimeException("dafadsfadsas");
+        return null;
     }
 
     /**
