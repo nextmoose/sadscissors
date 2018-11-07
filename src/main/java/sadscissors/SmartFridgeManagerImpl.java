@@ -106,12 +106,15 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
         Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
         Queue queue  = session.createQueue("fridge");
         MessageConsumer consumer = session.createConsumer(queue);
-        Message message = consumer.receive(SECOND);
-        MapMessage mapMessage = (MapMessage) message;
         Object[] obj = new Object[1];
-        System.out.println("AAAAAAAAAAAAAAAAAAA");
-        System.out.println(mapMessage.getString("foo"));
-        obj[0] = mapMessage.getString("uuid");
+        for (
+            Message message = consumer.receive(SECOND);
+            message != null;
+            message = consumer.receive(SECOND)
+            ) {
+            MapMessage mapMessage = (MapMessage) message;
+            obj[0] = mapMessage.getString("itemUUID");
+        }
         return obj;
     }
 }
