@@ -37,6 +37,7 @@ public final class TestIt {
      **/
     @Test
     public void justAnExample1() {
+        fridge.handleItemRemoved("100");
         fridge.getItems(HALF);
         assertTrue(true);
     }

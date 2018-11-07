@@ -12,7 +12,8 @@ dependencies {
     )
     compile  (
       'org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1',
-      'org.apache.activemq:activemq-broker:5.10.0'
+      'org.apache.activemq:activemq-broker:5.10.0',
+      'org.apache.activemq:activemq-kahadb-store:5.15.7'
     )
 }
 pitest {

@@ -20,7 +20,11 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      * @param itemUUID {@inheritDoc}
      **/
     public void handleItemRemoved(final String itemUUID) {
-        throw new RuntimeException("dasfdasfa213r3");
+        try {
+            doit();
+        } catch (JMSException cause) {
+            throw new RuntimeException(cause);
+        }
     }
 
     /**
@@ -80,9 +84,9 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
         connection.start();
         Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
         Queue queue  = session.createQueue("fridge");
-	MessageProducer producer = session.createProducer(queue);
-	MapMessage message = session.createMapMessage();
-	message.setString("foo", "bar");
-	producer.send(message);
+        MessageProducer producer = session.createProducer(queue);
+        MapMessage message = session.createMapMessage();
+        message.setString("foo", "bar");
+        producer.send(message);
     }
 }
