@@ -28,7 +28,16 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      **/
     public void handleItemRemoved(final String itemUUID) {
         try {
-            doit();
+            ConnectionFactory factory =
+                new ActiveMQConnectionFactory("vm://localhost");
+            Connection connection = factory.createConnection();
+            connection.start();
+            Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
+            Queue queue  = session.createQueue("fridge");
+            MessageProducer producer = session.createProducer(queue);
+            MapMessage message = session.createMapMessage();
+            message.setString("itemUUID", itemUUID);
+            producer.send(message);
         } catch (JMSException cause) {
             throw new RuntimeException(cause);
         }
@@ -86,24 +95,6 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
     /**
      * WTF.
      *
-     * @throws JMSException never
-     **/
-    private void doit() throws JMSException {
-        ConnectionFactory factory =
-            new ActiveMQConnectionFactory("vm://localhost");
-        Connection connection = factory.createConnection();
-        connection.start();
-        Session session = connection.createSession(false, AUTO_ACKNOWLEDGE);
-        Queue queue  = session.createQueue("fridge");
-        MessageProducer producer = session.createProducer(queue);
-        MapMessage message = session.createMapMessage();
-        message.setString("foo", "bar");
-        producer.send(message);
-    }
-
-    /**
-     * WTF.
-     *
      * @return wtf
      * @throws JMSException never
      **/
@@ -120,7 +111,7 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
         Object[] obj = new Object[1];
         System.out.println("AAAAAAAAAAAAAAAAAAA");
         System.out.println(mapMessage.getString("foo"));
-        obj[0] = mapMessage.getString("foo");
+        obj[0] = mapMessage.getString("uuid");
         return obj;
     }
 }

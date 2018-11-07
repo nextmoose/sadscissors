@@ -39,8 +39,9 @@ public final class TestIt {
     @Test
     public void justAnExample1() {
         fridge.handleItemRemoved("100");
-        assertEquals("bar", fridge.getItems(HALF)[0]);
-        assertEquals("bar", fridge.getItems(HALF)[0]);
+        fridge.handleItemRemoved("101");
+        assertEquals("1000", fridge.getItems(HALF)[0]);
+        assertEquals("bar2", fridge.getItems(HALF)[0]);
         assertTrue(true);
     }
 }
