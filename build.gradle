@@ -13,4 +13,5 @@ dependencies {
 }
 pitest {
   targetClasses = [ 'sadscissors.*' ];
+  targetTests = ['sadscissors.*'];
 }
