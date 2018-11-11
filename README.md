@@ -64,4 +64,20 @@ Then `getItems(0.10)` would put soda on the grocery list even though I clearly h
 The consumer of this interface must cast to use the results.
 It would be much better practice to define the returned value in a class.
 
-### 
+### Mutation Testing
+This project uses mutation testing as a check on the quality of the unit tests.
+This involved creating about 30 "mutants" of the source code and running the test suite
+over the mutant.
+
+A mutant is the source code with one simple change.
+For example, the original source code contained a line like
+```
+if (fillFactor < 0) {
+```
+The mutant "changed the conditional boundary"
+```
+if (fillFactor <= 0) {
+```
+
+If the "mutant" survived the test suite then this would suggest I had not been careful enough writing tests.
+Mutation testing is better than code coverage tools because code coverage only shows that the code had been exercised in test, but mutation testing exposes things like the dreaded "off by one" error.
