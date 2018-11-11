@@ -47,6 +47,11 @@ public final class SimpleTests {
     private static final double ONE_PLUS = ONE + EPSILON;
 
     /**
+     * Three Quarters.
+     **/
+    private static final double THREE_QUARTERS = 0.75;
+
+    /**
      * Unit under test.
      **/
     private SmartFridgeManager fridge;
@@ -143,20 +148,44 @@ public final class SimpleTests {
      * Test that getItems is calculating the FillFactor
      *
      * <OL>
-     *           <LI> Adding and empty container (the item at ZERO fill).
-     *           <LI> Adding the item at HALF fill.
-     *           <LI> Verifying that getItems(HALF) does not consider the empty
-     *                    container.
-     *           <LI> Verify that getFillFactor() does not consider the empty
-     *                    container.
+     *           <LI> Adding an empty container.
+     *           <LI> Adding a half full container.
+     *           <LI> Adding a full container.
+     *           <LI> Verifying that getItems(ONE)
+     *                    calculates the fill factor correct
+     *           <LI> Verify that getFillFactor()
+     *                    calculates the fill factor correct
      * </OL>
      **/
     @Test
     public void testCalculatesFillFactor() {
+        fridge.handleItemAdded(ITEM_TYPE, ITEM_UUID, ITEM_NAME, ZERO);
         fridge.handleItemAdded(ITEM_TYPE, ITEM_UUID, ITEM_NAME, HALF);
-        fridge.handleItemAdded(ITEM_TYPE, ITEM_UUID, ITEM_NAME, HALF);
-        assertEquals(1, fridge.getItems(HALF).length);
-        assertEquals(HALF, fridge.getFillFactor(ITEM_TYPE), EPSILON);
+        fridge.handleItemAdded(ITEM_TYPE, ITEM_UUID, ITEM_NAME, ONE);
+        assertEquals(1, fridge.getItems(ONE).length);
+        assertTrue(fridge.getItems(ONE)[0].getClass().isArray());
+        final Object[] item = (Object[]) fridge.getItems(ONE)[0];
+        assertEquals(ITEM_TYPE, item[0]);
+        assertEquals(Double.class, item[1].getClass());
+        final double fillFactor = (double) item[1];
+        assertEquals(THREE_QUARTERS, fillFactor, EPSILON);
+        assertEquals(THREE_QUARTERS, fridge.getFillFactor(ITEM_TYPE), EPSILON);
+    }
+
+    /**
+     * Tests that getItem does not return items
+     * that have fill factor greater than target.
+     *
+     * <OL>
+     *           <LI> Adding a half plus full container.
+     *           <LI> Verifying that getItems(HALF)
+     *                    does not return
+     * </OL>
+     **/
+    @Test
+    public void testCalculatesNotGreaterFill() {
+        fridge.handleItemAdded(ITEM_TYPE, ITEM_UUID, ITEM_NAME, HALF_PLUS);
+        assertEquals(0, fridge.getItems(HALF).length);
     }
 
     /**
