@@ -3,6 +3,17 @@
 This is an assessment project.
 I am coding to a provided interface.
 
+## Usage
+Execute `gradle clean check test pitest javadoc jar`.
+
+Generated files will be in the build directory.
+
+ * build/reports/checkstyle/main.html - results of static style checking
+ * build/tests/index.html - results of unit testing
+ * build/pitests/${TIMESTAMP}/index.html - results of mutation testing
+ * build/docs/javadoc/index.html - javadoc documentation
+ * build/libs/sillyscissors.jar - the generated artifact
+
 ## Discussion
 ### Criticism of the Interface
 #### Containers and Items
@@ -32,5 +43,25 @@ Since itemName is not use anywhere else, I decided to use the easiest candidate 
 
 However, that suggests that either the interface is incomplete (there should be methods that do use itemName) or itemName should be removed from the handleItemAdded method.
 
-#### Verbiage Regarding Empty Containers is Confusing
+#### Verbiage Regarding Empty Containers and Depleted Items  is Confusing
 I am interpreting it as we should ignore items with fill factor zero.
+This would be like the user consumed all 12 cans in the case and disposed of the cardboard case.
+
+The purpose of the getItems method is obviously to prepare a shopping list.
+If I am out running out of soda, then I should buy some more.
+However, as implemented when the user has consumed all the soda, soda will be effectively forgotten.
+There also does not seem to be a way for the user to tell the system that even though there is currently no soda in the fridge, the user wants soda on the next shopping list.
+
+#### Fill Factor
+The interface does not explicitly state what fill factor is, but it strongly suggests that it is an average.
+This appears wrong.
+For example, I could add 1,000,000 mostly empty cases of soda (1 can each).
+The fill factor for soda would be 0.0833.
+Then `getItems(0.10)` would put soda on the grocery list even though I clearly have more than enough.
+
+#### Failure to Use Typing
+`getItems` returns an array of arrays.
+The consumer of this interface must cast to use the results.
+It would be much better practice to define the returned value in a class.
+
+### 
