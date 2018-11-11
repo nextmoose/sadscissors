@@ -77,7 +77,7 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
         synchronized (tuples) {
             return tuples
                 .stream()
-                .filter(tuple -> tuple.getFillFactor() < fillFactor)
+                .filter(tuple -> tuple.getFillFactor() <= fillFactor)
                 .filter(tuple -> tuple.getFillFactor() > 0.0)
                 .map(tuple -> getItem(tuple))
                 .toArray();
