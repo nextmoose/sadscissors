@@ -79,7 +79,7 @@ if (fillFactor <= 0) {
 ```
 
 If the "mutant" survived the test suite then this would suggest I had not been careful enough writing tests.
-Mutation testing is better than code coverage tools because code coverage only shows that the code had been exercised in test, but mutation testing exposes things like the dreaded "off by one" error.
+Mutation testing is better than code coverage tools because code coverage only shows that the code had been exercised in test, but mutation testing exposes things like boundary condition errors.
 
 #### Missing syncronized mutator
 The code uses the syncronized keyword in an attempt to guard against inconsistent results
