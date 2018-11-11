@@ -5,6 +5,7 @@ import org.junit.Test;
 import static java.lang.Long.parseLong;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Simple Tests.
@@ -14,6 +15,11 @@ public final class SimpleTests {
      * Close enough.
      **/
     private static final double EPSILON = 0.01;
+
+    /**
+     * Zero.
+     **/
+    private static final double ZERO_MINUS = 0.0 - EPSILON;
 
     /**
      * Zero.
@@ -31,9 +37,14 @@ public final class SimpleTests {
     private static final double HALF_PLUS = HALF + EPSILON;
 
     /**
-     * Just a little bit less than HALF.
+     * One.
      **/
-    private static final double HALF_MINUS = HALF - EPSILON;
+    private static final double ONE = 1.00;
+
+    /**
+     * Just a little bit more than ONE.
+     **/
+    private static final double ONE_PLUS = ONE + EPSILON;
 
     /**
      * Unit under test.
@@ -167,5 +178,67 @@ public final class SimpleTests {
         fridge.forgetItem(ITEM_TYPE);
         assertEquals(0, fridge.getItems(HALF).length);
         assertEquals(ZERO, fridge.getFillFactor(ITEM_TYPE), EPSILON);
+    }
+
+    /**
+     * Test that we can not add at fill factor less than zero.
+     *
+     * <OL>
+     *           <LI> Adding the item with a negative fill factor.
+     *           <LI> Verifying that an exception is thrown.
+     * </OL>
+     **/
+    @Test
+    public void testNegativeFill() {
+        try {
+            fridge.handleItemAdded(ITEM_TYPE, ITEM_UUID, ITEM_NAME, ZERO_MINUS);
+            fail();
+        } catch (IllegalArgumentException cause) {
+            assertEquals("Negative Fill Factor", cause.getMessage());
+        }
+    }
+
+    /**
+     * Test that we can add at fill factor at zero
+     *
+     * <OL>
+     *           <LI> Adding the item with a zero fill factor.
+     *           <LI> Verifying that an exception is not thrown.
+     * </OL>
+     **/
+    @Test
+    public void testZeroFill() {
+        fridge.handleItemAdded(ITEM_TYPE, ITEM_UUID, ITEM_NAME, ZERO);
+    }
+
+    /**
+     * Test that we can add at fill factor one.
+     *
+     * <OL>
+     *           <LI> Adding the item with a fill factor of one.
+     *           <LI> No exceptions.
+     * </OL>
+     **/
+    @Test
+    public void testFullFill() {
+        fridge.handleItemAdded(ITEM_TYPE, ITEM_UUID, ITEM_NAME, ONE);
+    }
+
+    /**
+     * Test that we can not add at fill factor more than one.
+     *
+     * <OL>
+     *           <LI> Adding the item with a fill factor greater than one.
+     *           <LI> Verifying that an exception is thrown.
+     * </OL>
+     **/
+    @Test
+    public void testOverFill() {
+        try {
+            fridge.handleItemAdded(ITEM_TYPE, ITEM_UUID, ITEM_NAME, ONE_PLUS);
+            fail();
+        } catch (IllegalArgumentException cause) {
+            assertEquals("Over Fill", cause.getMessage());
+        }
     }
 }
