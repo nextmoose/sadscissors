@@ -1,0 +1,4 @@
+/**
+ * WTF.
+ **/
+package sadscissors;
