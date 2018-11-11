@@ -7,9 +7,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * WTF.
+ * Simple Tests.
  **/
-public final class TestIt {
+public final class SimpleTests {
     /**
      * Close enough.
      **/
@@ -60,7 +60,7 @@ public final class TestIt {
     /**
      * Construct a test instance.
      **/
-    public TestIt() {
+    public SimpleTests() {
     };
 
     /**
