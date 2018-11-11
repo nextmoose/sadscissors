@@ -135,4 +135,26 @@ public final class TestIt {
         assertEquals(0, fridge.getItems(HALF).length);
         assertEquals(HALF_PLUS, fridge.getFillFactor(TYPE), EPSILON);
     }
+
+    /**
+     * Test that getItems and getFillFactor will ignore empty containers.
+     *
+     * <OL>
+     *           <LI> Verifying that the item is not in the fridge.
+     *           <LI> Adding and empty container (the item at ZERO fill).
+     *           <LI> Adding the item at HALF fill.
+     *           <LI> Verifying that getItems(HALF) does not consider the empty
+     *                    container.
+     *           <LI> Verify that getFillFactor() does not consider the empty
+     *                    container.
+     * </OL>
+     **/
+    @Test
+    public void testGetItemsPlus() {
+        assertEquals(0, fridge.getItems(ZERO).length);
+        assertEquals(ZERO, fridge.getFillFactor(TYPE), EPSILON);
+        fridge.handleItemAdded(TYPE, ITEM_UUID, ITEM_NAME, HALF_PLUS);
+        assertEquals(0, fridge.getItems(HALF).length);
+        assertEquals(HALF_PLUS, fridge.getFillFactor(TYPE), EPSILON);
+    }
 }
