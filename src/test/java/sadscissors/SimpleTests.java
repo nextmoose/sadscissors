@@ -14,7 +14,7 @@ public final class SimpleTests {
     /**
      * Close enough.
      **/
-    private static final double EPSILON = 0.01;
+    private static final Double EPSILON = 0.0000001;
 
     /**
      * Zero.
