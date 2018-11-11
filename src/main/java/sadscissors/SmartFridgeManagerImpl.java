@@ -74,14 +74,16 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      * @return an array of arrays containing [ itemType, fillFactor ]
      **/
     public Object[] getItems(final Double fillFactor) {
+        final Object[] items;
         synchronized (tuples) {
-            return tuples
+            items = tuples
                 .stream()
                 .filter(tuple -> tuple.getFillFactor() <= fillFactor)
                 .filter(tuple -> tuple.getFillFactor() > 0.0)
                 .map(tuple -> getItem(tuple))
                 .toArray();
         }
+        return items;
     }
 
     /**
@@ -91,8 +93,9 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
      * @return @{inheritDoc}
      **/
     public Double getFillFactor(final long itemType) {
+        final Double fillFactor;
         synchronized (tuples) {
-            return tuples
+            fillFactor = tuples
                 .stream()
                 .filter(tuple -> tuple.getItemType() == itemType)
                 .filter(tuple -> tuple.getFillFactor() > 0)
@@ -100,6 +103,7 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
                 .average()
                 .orElse(0.0);
         }
+        return fillFactor;
     }
 
     /**

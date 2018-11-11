@@ -1,15 +1,16 @@
 package sadscissors;
 
 import org.junit.Before;
-import org.junit.Test;
-import static java.lang.Long.parseLong;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Test multi-threaded.
  **/
 public final class ThreadTests {
+    /**
+     * Unit under test.
+     **/
+    private SmartFridgeManager fridge;
+
     /**
      * Construct a test instance.
      **/
