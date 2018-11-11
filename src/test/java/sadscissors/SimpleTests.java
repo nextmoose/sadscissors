@@ -140,6 +140,20 @@ public final class SimpleTests {
     }
 
     /**
+     * Test that what happens if nothing has been added.
+     *
+     * <OL>
+     *           <LI> Verifying that getItems(HALF) returns 0.
+     *           <LI> Verify that getFillFactor() does not return anything.
+     * </OL>
+     **/
+    @Test
+    public void testVoid() {
+        assertEquals(0, fridge.getItems(HALF).length);
+        assertEquals(ZERO, fridge.getFillFactor(ITEM_TYPE), EPSILON);
+    }
+
+    /**
      * Test that getItems is returning in the array of arrays format.
      *
      * <OL>
