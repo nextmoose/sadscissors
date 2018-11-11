@@ -36,6 +36,13 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
                                 final String itemUUID,
                                 final String name,
                                 final Double fillFactor) {
+        if (fillFactor < 0) {
+            throw
+                new IllegalArgumentException("Negative Fill Factor");
+        } else if (fillFactor > 1) {
+            throw
+                new IllegalArgumentException("Over Fill");
+        }
         synchronized (tuples) {
             this.tuples.add(new Tuple() {
                     @Override
