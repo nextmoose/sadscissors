@@ -54,8 +54,7 @@ There also does not seem to be a way for the user to tell the system that even t
 
 #### Fill Factor
 The interface does not explicitly state what fill factor is, but it strongly suggests that it is an average.
-This appears wrong.
-For example, I could add 1,000,000 mostly empty cases of soda (1 can each).
+I could add 1,000,000 mostly empty cases of soda (1 can each).
 The fill factor for soda would be 0.0833.
 Then `getItems(0.10)` would put soda on the grocery list even though I clearly have more than enough.
 
@@ -81,3 +80,28 @@ if (fillFactor <= 0) {
 
 If the "mutant" survived the test suite then this would suggest I had not been careful enough writing tests.
 Mutation testing is better than code coverage tools because code coverage only shows that the code had been exercised in test, but mutation testing exposes things like the dreaded "off by one" error.
+
+#### Missing syncronized mutator
+The code uses the syncronized keyword in an attempt to guard against inconsistent results
+when multiple threads simultaneously access the fridge.
+This probably works, but is absolutely untested.
+
+Testing this would probably involve creating a fridge with an incredibly large number of items in it.
+This would mean that removing items (or forgetting them) would take a non trivial amount of time.
+If one thread removed items while another thread `getItems` and the operations overlapped, then we would expect inconsistencies.
+
+I have chosen not to write such tests.
+I believe that there is a good chance they would pass falsely because the JVM will for the most part schedule non-overlapping execution.
+
+A hypothetical "synchronized mutator" would expose this.  This mutator would turn a block of code like
+```
+        synchronized (tuples) {
+            tuples.removeIf(tuple -> tuple.getItemUUID() == itemUUID);
+        }
+```
+into 
+```
+        /* not synchronized (tuples) */ {
+            tuples.removeIf(tuple -> tuple.getItemUUID() == itemUUID);
+        }
+```
