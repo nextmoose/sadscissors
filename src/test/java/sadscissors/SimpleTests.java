@@ -140,6 +140,26 @@ public final class SimpleTests {
     }
 
     /**
+     * Test that getItems is calculating the FillFactor
+     *
+     * <OL>
+     *           <LI> Adding and empty container (the item at ZERO fill).
+     *           <LI> Adding the item at HALF fill.
+     *           <LI> Verifying that getItems(HALF) does not consider the empty
+     *                    container.
+     *           <LI> Verify that getFillFactor() does not consider the empty
+     *                    container.
+     * </OL>
+     **/
+    @Test
+    public void testCalculatesFillFactor() {
+        fridge.handleItemAdded(ITEM_TYPE, ITEM_UUID, ITEM_NAME, HALF);
+        fridge.handleItemAdded(ITEM_TYPE, ITEM_UUID, ITEM_NAME, HALF);
+        assertEquals(1, fridge.getItems(HALF).length);
+        assertEquals(HALF, fridge.getFillFactor(ITEM_TYPE), EPSILON);
+    }
+
+    /**
      * Test that what happens if nothing has been added.
      *
      * <OL>

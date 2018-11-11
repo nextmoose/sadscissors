@@ -2,6 +2,8 @@ package sadscissors;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.averagingDouble;
 
 /**
  * @{inheritDoc}.
@@ -64,13 +66,14 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
     }
 
     /**
-     * Gets the item.
+     * Gets the item in the array format specified by getItems.
      *
-     * @param tuple input
-     * @return the item
+     * @param itemType the specified item type
+     * @param fillFactor the specified fill factor
+     * @return the item in the specified format
      **/
-    private Object[] getItem(final Tuple tuple) {
-        Object[] item = {tuple.getItemType(), tuple.getFillFactor()};
+    private Object[] getItem(final Long itemType, final double fillFactor) {
+        Object[] item = {itemType, fillFactor};
         return item;
     }
 
@@ -85,9 +88,16 @@ final class SmartFridgeManagerImpl implements SmartFridgeManager {
         synchronized (tuples) {
             items = tuples
                 .stream()
-                .filter(tuple -> tuple.getFillFactor() <= fillFactor)
                 .filter(tuple -> tuple.getFillFactor() > 0.0)
-                .map(tuple -> getItem(tuple))
+                .collect(groupingBy(
+                                    tuple -> tuple.getItemType(),
+                                    averagingDouble(
+                                                    tuple
+                                                    -> tuple.getFillFactor())))
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() <= fillFactor)
+                .map(entry -> getItem(entry.getKey(), entry.getValue()))
                 .toArray();
         }
         return items;
